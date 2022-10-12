@@ -9,10 +9,14 @@ class ListAllUsersUseCase {
   constructor(private usersRepository: IUsersRepository) {}
 
   execute({ user_id }: IRequest): User[] {
+    if (!user_id) {
+      throw new Error("No user_id has been provided");
+    }
+
     const user = this.usersRepository.findById(user_id);
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error("No user has been found");
     }
 
     if (!user.admin) {
